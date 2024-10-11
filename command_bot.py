@@ -34,6 +34,10 @@ def init(bot: Bot, config: dict):
             winner_userid = count_down(time, config["msg_id"], config["token"], number)
             for userid in winner_userid:
                 await ch.send(f"恭喜 (met){userid}(met)  获得了 {text} !")  # @中奖用户
+                user = await bot.client.fetch_user(userid)
+                card = Card(Module.Header(f"恭喜你获得了 {text} "))
+                card.append(Module.Section(Element.Text(f'快去开票频道开票联系管理员吧 !')))
+                await user.send(CardMessage(card))
         except:
             card = Card(Module.Header('发生错误,检查下有没有设置频道ID,或者没有足够的用户参加抽奖'))
             await msg.reply(CardMessage(card))
