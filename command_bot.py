@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from function_bot import count_down
 from khl.card import Card, CardMessage, Module, Types, Element, Struct
-from khl import Bot,Message
+from khl import Bot,Message  
 
 
 def init(bot: Bot, config: dict):
@@ -21,7 +21,7 @@ def init(bot: Bot, config: dict):
             card.append(Module.Context("在这条卡片下方用✋回应来参与抽奖"))  # 小字提示
             card.append(
                 Module.Countdown(
-                    datetime.now() + timedelta(seconds=(time * 3600)), mode=Types.CountdownMode.DAY  # 倒计时
+                    datetime.now() + timedelta(seconds=(time * 3600)), mode=Types.CountdownMode.DAY  # 倒计时  
                 ))
             card.append(Module.Countdown(
                 datetime.now() + timedelta(seconds=(time * 3600)), mode=Types.CountdownMode.HOUR  # 倒计时
@@ -37,7 +37,7 @@ def init(bot: Bot, config: dict):
                 user = await bot.client.fetch_user(userid)
                 card = Card(Module.Header(f"恭喜你获得了 {text} "))
                 card.append(Module.Section(Element.Text(f'快去开票频道开票联系管理员吧 !')))
-                await user.send(CardMessage(card))
+                await user.send(CardMessage(card))  # 给中奖用户发送私信提醒
         except:
             card = Card(Module.Header('发生错误,检查下有没有设置频道ID,或者没有足够的用户参加抽奖'))
             await msg.reply(CardMessage(card))
@@ -46,7 +46,7 @@ def init(bot: Bot, config: dict):
     @bot.command(name='help')
     async def help(msg: Message):
 
-        card = Card(Module.Header('指令'))  # 标题
+        card = Card(Module.Header('指令'))  # 标题    
         card.append(Module.Divider())  # 分割线
         card.append(Module.Section(
             Element.Text('抽奖指令: `/lotto <str:物品> <int:数量> <int:时间(小时)>`')))
