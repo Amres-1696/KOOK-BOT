@@ -1,5 +1,6 @@
 {
-    "token" : "", // 你的kook bot的token
-    "channel" : "", // 频道ID
-    "msg_id" : "" // 消息ID
+  "token": "",
+  "channel": "",
+  "msg_id": "",
+  "emoji": "✋"
 }
