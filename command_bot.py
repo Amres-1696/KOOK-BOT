@@ -54,13 +54,13 @@ def init(bot: Bot, config: dict):
         card = Card(Module.Header('指令'))  # 标题
         card.append(Module.Divider())  # 分割线
         card.append(Module.Section(
-            Element.Text('抽奖指令: `/lotto <str:物品> <int:数量> <int:时间(小时)>`')))
+            Element.Text('抽奖指令: `/lotto <物品> <数量> <时间(小时)>`')))
         card.append(Module.Section(
-            Element.Text('设置频道: `/ch <str:频道ID>`')))
+            Element.Text('设置频道: `/ch <频道ID>`')))
         card.append(Module.Section(
             Element.Text('向频道发送初始消息: `/msg `')))
         card.append(Module.Section(
-            Element.Text('设置回应表情: `/emoji ` (默认为✋)' )))
+            Element.Text('设置回应表情: `/emoji <表情包>` (默认为✋)' )))
         card.append(Module.Divider())  # 分割线
         card.append(Module.Section(
             Element.Text('**建议以上指令都在私密频道使用**' )))
