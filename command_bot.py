@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from function_bot import count_down
 from khl.card import Card, CardMessage, Module, Types, Element, Struct
-from khl import Bot,Message  
+from khl import Bot,Message
 
 
 def init(bot: Bot, config: dict):
@@ -10,8 +10,13 @@ def init(bot: Bot, config: dict):
     #          抽奖奖品          数量          时间(小时)
     @bot.command(name='lotto')
     async def lotto_command(msg: Message, text: str, number: int, time: int):
-
         try:
+            if config["channel"]:
+                pass
+            else:
+                card = Card(Module.Header('请先设置频道'))
+                await msg.reply(CardMessage(card))
+                return
             # 获取频道ID
             ch = await bot.client.fetch_public_channel(config["channel"])
 
@@ -31,7 +36,7 @@ def init(bot: Bot, config: dict):
 
             config["msg_id"] = ret["msg_id"]  # 记录抽奖消息ID(获取该条消息的回应)
 
-            winner_userid = count_down(time, config["msg_id"], config["token"], number)
+            winner_userid = count_down(time,config, number)
             for userid in winner_userid:
                 await ch.send(f"恭喜 (met){userid}(met)  获得了 {text} !")  # @中奖用户
                 user = await bot.client.fetch_user(userid)
@@ -39,14 +44,14 @@ def init(bot: Bot, config: dict):
                 card.append(Module.Section(Element.Text(f'快去开票频道开票联系管理员吧 !')))
                 await user.send(CardMessage(card))  # 给中奖用户发送私信提醒
         except:
-            card = Card(Module.Header('发生错误,检查下有没有设置频道ID,或者没有足够的用户参加抽奖'))
+            card = Card(Module.Header('发生错误,可能没有足够的用户参加抽奖'))
             await msg.reply(CardMessage(card))
 
     # /help
     @bot.command(name='help')
     async def help(msg: Message):
 
-        card = Card(Module.Header('指令'))  # 标题    
+        card = Card(Module.Header('指令'))  # 标题
         card.append(Module.Divider())  # 分割线
         card.append(Module.Section(
             Element.Text('抽奖指令: `/lotto <str:物品> <int:数量> <int:时间(小时)>`')))
@@ -54,6 +59,11 @@ def init(bot: Bot, config: dict):
             Element.Text('设置频道: `/channel <str:频道ID>`')))
         card.append(Module.Section(
             Element.Text('向频道发送初始消息: `/msg `')))
+        card.append(Module.Section(
+            Element.Text('设置回应表情: `/emoji ` (默认为✋)' )))
+        card.append(Module.Divider())  # 分割线
+        card.append(Module.Section(
+            Element.Text('**建议以上指令都在私密频道使用**' )))
         await msg.reply(CardMessage(card))
 
     # /channel <channel_id : int> 设置频道ID
@@ -76,3 +86,10 @@ def init(bot: Bot, config: dict):
         card.append(Module.Section(Element.Text('**中奖用户**请在**开票频道开票**')))
         card.append(Module.Section(Element.Text('示例如下:')))
         await ch.send(CardMessage(card))
+
+# /emoji <emoji> 设置回应表情
+    @bot.command(name='emoji')
+    async def emoji(msg: Message, emoji):
+        card = Card(Module.Header('回应表情设置成功'))
+        config['emoji'] = emoji
+        await msg.reply(CardMessage(card))

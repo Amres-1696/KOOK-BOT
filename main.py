@@ -1,6 +1,7 @@
 from khl import Bot,Message
 import json
 import command_bot
+from setuptools.command.setopt import config_file
 
 
 # 打开配置文件

@@ -5,24 +5,24 @@ import requests
 from urllib.parse import urlencode
 
 
-def count_down(lotto_time,msg_id, bot_token,number):
+def count_down(lotto_time,config,number):
     """计时"""
     lotto_time = lotto_time*3600
     while lotto_time > 0:
         time.sleep(1)
         lotto_time -= 1
-    return get_user_id(msg_id, bot_token,number)
+    return get_user_id(config,number)
 
 
-def get_user_id(msg_id, bot_token,number):
+def get_user_id(config,number):
     """获取抽奖信息下的✋回应的用户id"""
     params = {
-        'msg_id': msg_id,
-        'emoji': "✋",
+        'msg_id': config['msg_id'],
+        'emoji': config['emoji'],
         'sort': 'id',
     }
     headers = {
-        'Authorization': f'Bot {bot_token}',
+        'Authorization': f'Bot {config["bot_token"]}',
     }
     url = 'https://www.kookapp.cn/api/v3/message/reaction-list'  # kook的api 
 
@@ -39,8 +39,6 @@ def winner(users : list,number):
     else:
         winner_indices = random.sample(list(range(0, len(users_id) - 1)), number)
         return [users_id[n] for n in winner_indices]
-
-
 
 
 
