@@ -56,7 +56,7 @@ def init(bot: Bot, config: dict):
         card.append(Module.Section(
             Element.Text('抽奖指令: `/lotto <str:物品> <int:数量> <int:时间(小时)>`')))
         card.append(Module.Section(
-            Element.Text('设置频道: `/channel <str:频道ID>`')))
+            Element.Text('设置频道: `/ch <str:频道ID>`')))
         card.append(Module.Section(
             Element.Text('向频道发送初始消息: `/msg `')))
         card.append(Module.Section(
